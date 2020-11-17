@@ -50,7 +50,7 @@ main {
   padding-bottom: 100%;
 }
 
-form {
+.message-form {
   border: 2px yellow solid;
   position: fixed;
   left: 0;
@@ -77,11 +77,11 @@ aside div.selected {
   color: red;
 }
 
-form input {
+.message-form input {
   margin-bottom: .5em;
 }
 
-form input:nth-child(3) {
+.message-form #content {
   width: 80%;
   height: 3em;
 }

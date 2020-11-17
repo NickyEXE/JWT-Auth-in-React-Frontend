@@ -1,6 +1,7 @@
 import React from 'react'
 import MessageList from './MessageList'
 import MessageForm from '../components/MessageForm'
+import { postMessage, getMessages } from '../services/requests'
 
 class MessageContainer extends React.Component {
 
@@ -11,8 +12,7 @@ class MessageContainer extends React.Component {
   }
 
   getMessages = () => {
-    fetch(`http://localhost:3000/channels/${this.props.channel}`)
-    .then(res => res.json())
+    getMessages(this.props.channel)
     .then(this.updateStateFromJSON)
   }
 
@@ -35,18 +35,7 @@ class MessageContainer extends React.Component {
   }
 
   addMessage = (message) => {
-    // const newMessage = {...message, id: uuidv4()}
-    fetch(`http://localhost:3000/channels/${this.props.channel}/messages`, {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // {...message, channel_id: this.props.channel}
-      // message: {username: "Terminator", content: "Hello World"}
-      // {     username: "Terminator", content: "Hello World", channel_id: this.props.channel                   }
-      body: JSON.stringify(message),
-    })
-    .then(response => response.json())
+    postMessage(this.props.channel, message)
     .then(newMessage => this.setState({messages: [...this.state.messages, newMessage]}))
   }
 
@@ -54,7 +43,7 @@ class MessageContainer extends React.Component {
     return(
       <>
         <h3>#{this.state.name}</h3>
-        <MessageForm addMessage={this.addMessage}/>
+        <MessageForm addMessage={this.addMessage} user={this.props.user}/>
         <MessageList messages={this.state.messages} updateStateFromJSON={this.updateStateFromJSON}/>
       </>
     )
