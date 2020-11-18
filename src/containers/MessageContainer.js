@@ -35,15 +35,11 @@ class MessageContainer extends React.Component {
   }
 
   addMessage = (message) => {
-    // const newMessage = {...message, id: uuidv4()}
     fetch(`http://localhost:3000/channels/${this.props.channel}/messages`, {
       method: 'POST', // or 'PUT'
       headers: {
         'Content-Type': 'application/json',
       },
-      // {...message, channel_id: this.props.channel}
-      // message: {username: "Terminator", content: "Hello World"}
-      // {     username: "Terminator", content: "Hello World", channel_id: this.props.channel                   }
       body: JSON.stringify(message),
     })
     .then(response => response.json())
