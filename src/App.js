@@ -6,6 +6,7 @@ import ChannelContainer from './containers/ChannelContainer'
 import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import { requestAutologin } from './services/requests';
 
 class App extends Component {
 
@@ -13,6 +14,19 @@ class App extends Component {
     channel: null,
     user: {id: null, name: ""},
     signup: false
+  }
+
+  componentDidMount(){
+    if (localStorage.token){
+      requestAutologin()
+      .then(response => {
+        if (!response.errors){
+          this.setUser(response)
+        } else {
+          alert(response.errors)
+        }
+      })
+    }
   }
 
   changeChannel = (id) => this.setState({ channel: id })
@@ -28,11 +42,17 @@ class App extends Component {
           <Login setUser={this.setUser} toggleSignup={this.toggleSignup}/>
   }
 
-  setUser = (user) => this.setState({user: user})
+  setUser = (response) => {
+    this.setState({user: response.user})
+    localStorage.token = response.token
+  }
 
   toggleSignup = () => this.setState({signup: !this.state.signup})
 
-  logout = () => this.setState({user: {id: null, username: ""}})
+  logout = () => {
+    this.setState({user: {id: null, username: ""}})
+    localStorage.clear("token")
+  }
 
   render(){
     return (<>

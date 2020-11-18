@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { requestSignup } from '../services/requests'
 
 export default class Signup extends Component{
 
@@ -15,14 +16,7 @@ export default class Signup extends Component{
     const { username, password, passwordConfirmation } = this.state
     if (password === passwordConfirmation){
       const body = {username: username, password: password}
-      fetch('http://localhost:3000/users', {
-        method: 'POST', // or 'PUT'
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-      })
-      .then(response => response.json())
+      requestSignup(body)
       .then(response => {
         if (!response.errors){
           this.props.setUser(response)
@@ -52,7 +46,7 @@ export default class Signup extends Component{
             Password Confirmation:
             <input type="password" name="passwordConfirmation" onChange={this.onChange} value={this.state.passwordConfirmation} />
           </label><br/>
-          {/* <input type="submit" value="Signup!" /> */}
+          <input type="submit" value="Signup!" style={{display: "none"}} />
         </form>
         <br/>
         <button onClick={this.props.toggleSignup}>Or Login!</button>

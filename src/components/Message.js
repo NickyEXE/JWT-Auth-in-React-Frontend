@@ -1,4 +1,5 @@
 import React from 'react'
+import { requestLike } from '../services/requests'
 import LikeButton from './LikeButton'
 
 class Message extends React.Component {
@@ -9,10 +10,7 @@ class Message extends React.Component {
   // }
 
   onClick = () => {
-    fetch(`http://localhost:3000/messages/${this.props.id}/likes`, {
-      method: "POST"
-    })
-    .then(res => res.json())
+    requestLike(this.props.id)
     .then(this.props.updateStateFromJSON)
   }
 

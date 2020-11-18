@@ -1,6 +1,7 @@
 import React from 'react'
 import MessageList from './MessageList'
 import MessageForm from '../components/MessageForm'
+import { requestCreateMessage } from '../services/requests'
 
 class MessageContainer extends React.Component {
 
@@ -35,14 +36,7 @@ class MessageContainer extends React.Component {
   }
 
   addMessage = (message) => {
-    fetch(`http://localhost:3000/channels/${this.props.channel}/messages`, {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    })
-    .then(response => response.json())
+    requestCreateMessage(this.props.channel, message)
     .then(newMessage => this.setState({messages: [...this.state.messages, newMessage]}))
   }
 

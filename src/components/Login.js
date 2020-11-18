@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { requestLogin } from '../services/requests'
 
 export default class Login extends Component{
 
@@ -13,14 +14,7 @@ export default class Login extends Component{
     e.preventDefault()
     const { username, password } = this.state
     const body = {username: username, password: password}
-    fetch('http://localhost:3000/login', {
-      method: 'POST', // or 'PUT'
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
-    .then(response => response.json())
+    requestLogin(body)
     .then(response => {
       if (!response.errors){
         this.props.setUser(response)

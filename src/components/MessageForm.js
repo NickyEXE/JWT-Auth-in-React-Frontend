@@ -3,7 +3,6 @@ import React, {Component} from 'react'
 export default class MessageForm extends Component {
 
   state = {
-    username: "",
     content: ""
   }
 
@@ -16,7 +15,6 @@ export default class MessageForm extends Component {
     e.preventDefault()
     this.props.addMessage(this.state)
     this.setState({
-      username: "",
       content: ""
     })
   }
@@ -24,11 +22,6 @@ export default class MessageForm extends Component {
   render(){
     return(
     <form className="message-form" onSubmit={this.onSubmit}>
-      <label>
-        Username:
-        <input type="content" name="username" value={this.state.username} onChange={this.onChange} />
-      </label>
-      <br/>
       <input type="content" name="content" value={this.state.content} onChange={this.onChange} id="content" />
       <br/>
       <input type="submit" value="Submit" />
