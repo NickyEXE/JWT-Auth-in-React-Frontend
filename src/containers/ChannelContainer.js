@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Channel from '../components/Channel'
+import { channelsRequest } from '../services/requests'
 
 export default class ChannelContainer extends Component {
 
@@ -8,8 +9,7 @@ export default class ChannelContainer extends Component {
   }
 
   componentDidMount(){
-    fetch("http://localhost:3000/channels")
-    .then(res=>res.json())
+    channelsRequest()
     .then(channels => this.setState({ channels }))
   }
 

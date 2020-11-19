@@ -6,6 +6,7 @@ import ChannelContainer from './containers/ChannelContainer'
 import Welcome from './components/Welcome'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import { autologinRequest } from './services/requests';
 
 class App extends Component {
 
@@ -15,10 +16,23 @@ class App extends Component {
     signup: false
   }
 
+  componentDidMount(){
+    if (localStorage.token){
+      autologinRequest()
+      .then(response => {
+        if (!response.errors){
+          this.setUser(response)
+        } else {
+          alert(response.errors)
+        }
+      })
+    }
+  }
+
   changeChannel = (id) => this.setState({ channel: id })
 
   renderMainContainer = () => {
-    return this.state.user.id ?
+    return this.state.user.username ?
       this.state.channel ?
         <MessageContainer channel={this.state.channel}/> :
         <Welcome/>
@@ -28,16 +42,22 @@ class App extends Component {
           <Login setUser={this.setUser} toggleSignup={this.toggleSignup}/>
   }
 
-  setUser = (user) => this.setState({user: user})
+  setUser = (response) => {
+    this.setState({user: response.user})
+    localStorage.token = response.token
+  }
 
   toggleSignup = () => this.setState({signup: !this.state.signup})
 
-  logout = () => this.setState({user: {id: null, username: ""}})
+  logout = () => {
+    this.setState({user: {id: null, username: ""}})
+    localStorage.clear("token")
+  }
 
   render(){
     return (<>
         <header>
-        {this.state.user.id && <button onClick={this.logout}>Logout</button>}
+        {this.state.user.username && <button onClick={this.logout}>Logout</button>}
         <h1 onClick={() => this.changeChannel(null)}>Welcome to Hacker Chat</h1>
         <h3>A place for hackers and slashers to cut loose and cut flesh</h3>
         </header>
